@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useState} from "react";
 import { useForm, SubmitHandler } from 'react-hook-form'; 
 import { FieldFiller } from '../typings';
 import { Post } from '../typings';
@@ -8,6 +8,8 @@ interface Props {
   };
 
 const CommentForm: FC<Props> =( {post} ) => {
+
+    const [submitted, setSubmitted] = useState(false);
 
     const { 
         register, 
@@ -21,18 +23,28 @@ const CommentForm: FC<Props> =( {post} ) => {
                 method: 'POST', 
                 body: JSON.stringify(data)
             });
+            setSubmitted(true)
 
+            setTimeout(() => {
+                setSubmitted(false);
+            }, 3000)
             console.log(postComment);
         }
         catch(err){
             console.log(err);
+            setSubmitted(false);
         };
     }; 
 
     return (
     <>
         <hr className='max-w-lg my-5 mx-auto border border-yellow-500 '/>
-
+        {submitted ? (
+            <div className="flex flex-col py-10 my-10 bg-yellow-500 text-white max-w-2xl mx-auto text-center">
+                <h3 className="text-3xl font-bold">Thank you for submitting your comment!</h3>
+                <p>Once it has been approved, it will appear below</p>
+            </div>
+        ): ""}
         <form 
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col p-5 max-w-2xl mx-auto mb-10"
@@ -88,7 +100,6 @@ const CommentForm: FC<Props> =( {post} ) => {
             {errors.comment  && (
                 <span className="text-red-500">- The comment field is required</span>
             )}
-
         </div>
 
         <input 

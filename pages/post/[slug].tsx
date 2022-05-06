@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import React, {FC} from 'react'
 import PortableText from 'react-portable-text';
-import { CommentForm } from '../../components';
+import { CommentForm, Comment } from '../../components';
 import { sanityClient, urlFor } from '../../lib/sanity'
 import { Post } from '../../typings'
 
@@ -10,6 +10,8 @@ interface Props {
 }
 
 const PostId: FC<Props> = ({ post }) => {
+
+  console.log(post)
 
   return (
     <main>
@@ -59,7 +61,8 @@ const PostId: FC<Props> = ({ post }) => {
               />
           </div>
       </article>
-      <CommentForm post={post}/>
+      <CommentForm post={post} />
+      <Comment comments={post} />
     </main>
   )
 }
@@ -92,17 +95,20 @@ export const getStaticPaths: GetStaticPaths = async() => {
 };
 
 export const getStaticProps: GetStaticProps= async({ params }) => {
-  const query = `*[_type == "post" && slug.current == $slug][0]{
+  const query = `*[_type=="post" && slug.current == $slug][0]{
     _id, 
-    _createdAt, 
     title, 
-    author-> {
-      name, 
-      image
-    }, 
+    _createdAt, 
+    author->{
+     name, 
+     image
+  }, 
+  "comments": *[_type=="comment" 
+               && post._ref == ^._id
+               && approved == true],
     description, 
     mainImage, 
-    slug, 
+    slug,
     body
   }`
 
