@@ -1,21 +1,11 @@
-import React, {FC} from "react"
-import {useForm, SubmitHandler, FieldValues} from 'react-hook-form'; 
-
-import { Post } from '../typings'
+import React, {FC} from "react";
+import { useForm, SubmitHandler } from 'react-hook-form'; 
+import { FieldFiller } from '../typings';
+import { Post } from '../typings';
 
 interface Props {
     post: Post;
-  }
-
-interface IFormInput {
-    _id: string; 
-    name: string; 
-    email: string; 
-    comment: string;
-};
-
-type FieldFiller = IFormInput | FieldValues; 
-
+  };
 
 const CommentForm: FC<Props> =( {post} ) => {
 
@@ -26,7 +16,17 @@ const CommentForm: FC<Props> =( {post} ) => {
      } = useForm();
 
     const onSubmit: SubmitHandler<FieldFiller> = async(data) => {
-        console.log(data);
+        try{
+            const postComment = await fetch('/api/createComment', {
+                method: 'POST', 
+                body: JSON.stringify(data)
+            });
+
+            console.log(postComment);
+        }
+        catch(err){
+            console.log(err);
+        };
     }; 
 
     return (
@@ -100,8 +100,8 @@ const CommentForm: FC<Props> =( {post} ) => {
         </form> 
 
     </>
-    )
-}
+    );
+};
 
 
-export default CommentForm
+export default CommentForm;
