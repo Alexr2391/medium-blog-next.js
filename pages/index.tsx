@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Header from '../components/Header'
 import Banner from '../components/Banner'
 import { sanityClient, urlFor } from "../lib/sanity"
 import { Post } from '../typings' 
@@ -11,8 +10,6 @@ interface Props {
 }
 
 
-
-
 const Home: NextPage<Props> = ({posts}) => {
   return (
     <div className="max-w-7xl mx-auto">
@@ -20,7 +17,6 @@ const Home: NextPage<Props> = ({posts}) => {
         <title>Medium Blog</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
       <Banner />
     {/* Posts */}
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 p-2 md:p-6'>
