@@ -1,6 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import React, {FC} from 'react'
 import PortableText from 'react-portable-text';
+import { CommentForm } from '../../components';
 import { sanityClient, urlFor } from '../../lib/sanity'
 import { Post } from '../../typings'
 
@@ -58,6 +59,7 @@ const PostId: FC<Props> = ({ post }) => {
               />
           </div>
       </article>
+      <CommentForm post={post}/>
     </main>
   )
 }
